@@ -126,7 +126,7 @@ local classcolor = RAID_CLASS_COLORS[E.myclass]
 local hovercolor = {classcolor.r,classcolor.g,classcolor.b,1}
 
 local MinimapButton = CreateFrame("Button","ElvTMenuMinimapButton",Minimap)
-E.CreatePanel(MinimapButton, E.Scale(35), E.Scale(20), "LEFT", Minimap, "LEFT", E.Scale(2),E.Scale(2))
+E.CreatePanel(MinimapButton, E.Scale(35), E.Scale(20), "BOTTOMLEFT", Minimap, "BOTTOMLEFT", E.Scale(2),E.Scale(30))
 MinimapButton:EnableMouse(true)
 MinimapButton:RegisterForClicks("AnyUp")
 MinimapButton:SetFrameStrata("HIGH")
@@ -189,10 +189,12 @@ E.TMenuAddMainMenuItem("ElvUI Config", function() RunSlashCmd("/ec") end)
 E.TMenuAddMainMenuItem("Calendar", function() ToggleCalendar() end)
 E.TMenuAddMainMenuItem("Reload UI", function() ReloadUI() end)
 E.TMenuAddMainMenuItem("KeyRing", function() OpenAllBags(); ToggleKeyRing() end)
-E.TMenuAddMainMenuItem("Move UI Objects", function() RunSlashCmd("/moveui") end)
+E.TMenuAddMainMenuItem("(Un)lock user interface", function() RunSlashCmd("/moveui") end)
 E.TMenuAddMainMenuItem("Farm mode", function() RunSlashCmd("/farmmode") end)
 E.TMenuAddMainMenuItem("DPS Layout", function() RunSlashCmd("/dps") end)
 E.TMenuAddMainMenuItem("Heal Layout", function() RunSlashCmd("/heal") end)
+E.TMenuAddMainMenuItem("Raid Disband", function() RunSlashCmd("/rd") end)
+E.TMenuAddMainMenuItem("Hover Bind", function() RunSlashCmd("/hb") end)
 
 local returnbutton = CreateFrame("Button", "ElvTAddonMenuReturnButton", AddonBG)
 E.CreatePanel(returnbutton, buttonwidth, buttonheight, "TOPLEFT", AddonBG, "TOPLEFT", E.Scale(4), E.Scale(-4))
