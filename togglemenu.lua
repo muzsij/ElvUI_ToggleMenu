@@ -98,18 +98,18 @@ function RunSlashCmd(cmd)
 end 
 
 local MenuBG = CreateFrame("Frame", "ElvTMenuBackground", UIParent)
-E.CreatePanel(MenuBG, buttonwidth + E.Scale(8), buttonheight * 5 + E.Scale(18), "TOPRIGHT", TukuiMinimap, "TOPLEFT", E.Scale(-5), 0)
-E.CreateShadow(MenuBG)
-E.SetTransparentTemplate(MenuBG)
+MenuBG:CreatePanel("Transparent", buttonwidth + E.Scale(8), buttonheight * 5 + E.Scale(18), "TOPRIGHT", TukuiMinimap, "TOPLEFT", E.Scale(-5), 0)
+
+MenuBG:CreateShadow("Default")
+--E.SetTransparentTemplate(MenuBG)
 MenuBG:SetFrameLevel(defaultframelevel+0)
 MenuBG:SetFrameStrata("HIGH")
 MenuBG:Hide()
 
  
 local AddonBG = CreateFrame("Frame", "ElvTMenuAddOnBackground", UIParent)
-E.CreatePanel(AddonBG, buttonwidth + E.Scale(8), 1, "TOPRIGHT", MenuBG, "TOPRIGHT", 0, 0)
-E.CreateShadow(AddonBG)
-E.SetTransparentTemplate(AddonBG)
+AddonBG:CreatePanel("Transparent", buttonwidth + E.Scale(8), 1, "TOPRIGHT", MenuBG, "TOPRIGHT", 0, 0)
+AddonBG:CreateShadow("Default")
 AddonBG:SetFrameLevel(defaultframelevel+0)
 AddonBG:SetFrameStrata("HIGH")
 AddonBG:Hide()
@@ -126,7 +126,7 @@ local classcolor = RAID_CLASS_COLORS[E.myclass]
 local hovercolor = {classcolor.r,classcolor.g,classcolor.b,1}
 
 local MinimapButton = CreateFrame("Button","ElvTMenuMinimapButton",Minimap)
-E.CreatePanel(MinimapButton, E.Scale(35), E.Scale(20), "BOTTOMLEFT", Minimap, "BOTTOMLEFT", E.Scale(2),E.Scale(30))
+MinimapButton:CreatePanel("Default", E.Scale(35), E.Scale(20), "BOTTOMLEFT", Minimap, "BOTTOMLEFT", E.Scale(2),E.Scale(30))
 MinimapButton:EnableMouse(true)
 MinimapButton:RegisterForClicks("AnyUp")
 MinimapButton:SetFrameStrata("HIGH")
@@ -140,12 +140,11 @@ MinimapButton:HookScript("OnLeave", function(self)
 	end)
 MinimapButton:SetScript("OnMouseDown", function() E.ToggleMenu_Toggle() end)
 MinimapButton:Hide()
-local MinimapButton_text = MinimapButton:CreateFontString(nil,"LOW")
-MinimapButton_text:SetFont(C["media"].font,C["general"].fontscale,"OUTLINE")
-MinimapButton_text:SetPoint("Center",E.Scale(1),E.Scale(-1))
-MinimapButton_text:SetJustifyH("CENTER")
-MinimapButton_text:SetJustifyV("MIDDLE")
-MinimapButton_text:SetText("Menu")
+MinimapButton:FontString(nil, C["media"].font, C["general"].fontscale)
+MinimapButton.text:SetPoint("Center",E.Scale(1),E.Scale(-1))
+MinimapButton.text:SetJustifyH("CENTER")
+MinimapButton.text:SetJustifyV("MIDDLE")
+MinimapButton.text:SetText("Menu")
 
 Minimap:HookScript("OnEnter", function() 	
 		MinimapButton:Show()
@@ -163,7 +162,7 @@ function E.TMenuAddMainMenuItem(buttontext, buttonfunc)
 	menu.itemcount = menu.itemcount+1
 	local i = menu.itemcount
 	menu[i] = CreateFrame("Button", "ElvTMenuMain"..i, MenuBG)
-	E.CreatePanel(menu[i], buttonwidth, buttonheight, "TOP", MenuBG, "TOP", 0, E.Scale(-4))
+	menu[i]:CreatePanel("Default", buttonwidth, buttonheight, "TOP", MenuBG, "TOP", 0, E.Scale(-4))
 	menu[i]:SetFrameLevel(defaultframelevel+1)
 	menu[i]:SetFrameStrata("HIGH")
 	if i == 1 then
@@ -175,10 +174,9 @@ function E.TMenuAddMainMenuItem(buttontext, buttonfunc)
 	menu[i]:HookScript("OnEnter", function(self) self:SetBackdropBorderColor(unpack(hovercolor)) end)
 	menu[i]:HookScript("OnLeave", function(self) self:SetBackdropBorderColor(unpack(C.media.bordercolor)) end)
 	menu[i]:RegisterForClicks("AnyUp")
-	local Text = menu[i]:CreateFontString(nil, "LOW")
-	Text:SetFont(C.media.font, C.general.fontscale)
-	Text:SetPoint("CENTER", menu[i], 0, 0)
-	Text:SetText(buttontext)
+	menu[i]:FontString(nil, C["media"].font, C["general"].fontscale)
+	menu[i].text:SetPoint("CENTER", menu[i], 0, 0)
+	menu[i].text:SetText(buttontext)
 	menu[i]:SetScript("OnClick", buttonfunc)
 	_G["ElvTMenuBackground"]:SetHeight(buttonheight * menu.itemcount + E.Scale((menu.itemcount+1)*4))
 end
@@ -197,38 +195,36 @@ E.TMenuAddMainMenuItem("Raid Disband", function() RunSlashCmd("/rd") end)
 E.TMenuAddMainMenuItem("Hover Bind", function() RunSlashCmd("/hb") end)
 
 local returnbutton = CreateFrame("Button", "ElvTAddonMenuReturnButton", AddonBG)
-E.CreatePanel(returnbutton, buttonwidth, buttonheight, "TOPLEFT", AddonBG, "TOPLEFT", E.Scale(4), E.Scale(-4))
+returnbutton:CreatePanel("Default", buttonwidth, buttonheight, "TOPLEFT", AddonBG, "TOPLEFT", E.Scale(4), E.Scale(-4))
 returnbutton:EnableMouse(true)
 returnbutton:HookScript("OnEnter", function(self) self:SetBackdropBorderColor(unpack(hovercolor)) end)
 returnbutton:HookScript("OnLeave", function(self) self:SetBackdropBorderColor(unpack(C.media.bordercolor)) end)
 returnbutton:RegisterForClicks("AnyUp")
 returnbutton:SetFrameLevel(defaultframelevel+1)
 returnbutton:SetFrameStrata("HIGH")
-Text = returnbutton:CreateFontString(nil, "LOW")
-Text:SetFont(C.media.font, C.general.fontscale)
-Text:SetPoint("CENTER", returnbutton, 0, 0)
-Text:SetText("Return")
+returnbutton:FontString(nil, C["media"].font, C["general"].fontscale)
+returnbutton.text:SetPoint("CENTER", returnbutton, 0, 0)
+returnbutton.text:SetText("Return")
 returnbutton:SetScript("OnMouseUp", function() ToggleFrame(ElvTMenuAddOnBackground); ToggleFrame(ElvTMenuBackground); end)
 
 -- new stuff
 
 local expandbutton = CreateFrame("Button", "ElvTAddonMenuExpandButton", AddonBG)
-E.CreatePanel(expandbutton, buttonwidth, buttonheight/2, "BOTTOM", AddonBG, "BOTTOM", 0, E.Scale(4))
+expandbutton:CreatePanel("Default", buttonwidth, buttonheight/2, "BOTTOM", AddonBG, "BOTTOM", 0, E.Scale(4))
 expandbutton:EnableMouse(true)
 expandbutton:HookScript("OnEnter", function(self) self:SetBackdropBorderColor(unpack(hovercolor)) end)
 expandbutton:HookScript("OnLeave", function(self) self:SetBackdropBorderColor(unpack(C.media.bordercolor)) end)
 expandbutton:RegisterForClicks("AnyUp")
 expandbutton:SetFrameLevel(defaultframelevel+1)
 expandbutton:SetFrameStrata("HIGH")
-Text = expandbutton:CreateFontString(nil, "LOW")
-Text:SetFont(C.media.font, C.general.fontscale)
-Text:SetPoint("CENTER", expandbutton, 0, 0)
-Text:SetText("v")
-expandbutton.txt = Text
+expandbutton:FontString(nil, C["media"].font, C["general"].fontscale)
+expandbutton.text:SetPoint("CENTER", expandbutton, 0, 0)
+expandbutton.text:SetText("v")
 
 local collapsedAddons = {
 	["DBM"]      = "DBM-Core",
 	["ElvUI"]    = "ElvUI",
+	["Tukui"]    = "Tukui",
 }
 
 local addonInfo
@@ -357,11 +353,11 @@ end
 expandbutton:SetScript("OnMouseUp", function(self) 
 	addonToggleOnly = not addonToggleOnly
 	if addonToggleOnly then
-		self.txt:SetText("v")
-		self.txt:SetPoint("CENTER", self, 0, 0)
+		self.text:SetText("v")
+		self.text:SetPoint("CENTER", self, 0, 0)
 	else
-		self.txt:SetText("^")
-		self.txt:SetPoint("CENTER", self, 0, E.Scale(-2))
+		self.text:SetText("^")
+		self.text:SetPoint("CENTER", self, 0, E.Scale(-2))
 	end
 	refreshAddOnMenu()
 end)
@@ -369,7 +365,7 @@ end)
 for i = 1,GetNumAddOns() do
 	local name, _,_, _, _, _, _ = GetAddOnInfo(i)
 	addonmenuitems[i] = CreateFrame("Button", "AddonMenu"..i, AddonBG)
-	E.CreatePanel(addonmenuitems[i], buttonwidth, buttonheight, "TOP", returnbutton, "BOTTOM", 0, E.Scale(-3))
+	addonmenuitems[i]:CreatePanel("Default", buttonwidth, buttonheight, "TOP", returnbutton, "BOTTOM", 0, E.Scale(-3))
 	addonmenuitems[i]:EnableMouse(true)
 	addonmenuitems[i]:RegisterForClicks("AnyUp")
 	addonmenuitems[i]:SetFrameLevel(defaultframelevel+1)
@@ -400,13 +396,12 @@ for i = 1,GetNumAddOns() do
 	else
 		addonmenuitems[i]:SetBackdropColor(unpack(C.media.bordercolor))
 	end
-	Text = addonmenuitems[i]:CreateFontString(nil, "LOW")
-	Text:SetFont(C.media.font, C.general.fontscale)
-	Text:SetPoint("CENTER", addonmenuitems[i], 0, 0)
-	Text:SetText(select(2,GetAddOnInfo(i)))
+	addonmenuitems[i]:FontString(nil, C["media"].font, C["general"].fontscale)
+	addonmenuitems[i].text:SetPoint("CENTER", addonmenuitems[i], 0, 0)
+	addonmenuitems[i].text:SetText(select(2,GetAddOnInfo(i)))
 	if addonInfo[i].is_main then
 		local expandAddonButton = CreateFrame("Button", "AddonMenuExpand"..i, addonmenuitems[i])
-		E.CreatePanel(expandAddonButton, buttonheight-E.Scale(6), buttonheight-E.Scale(6), "TOPLEFT", addonmenuitems[i], "TOPLEFT", E.Scale(3), E.Scale(-3))
+		expandAddonButton:CreatePanel("Default", buttonheight-E.Scale(6), buttonheight-E.Scale(6), "TOPLEFT", addonmenuitems[i], "TOPLEFT", E.Scale(3), E.Scale(-3))
 		expandAddonButton:SetFrameLevel(defaultframelevel+2)
 		expandAddonButton:SetFrameStrata("HIGH")
 		expandAddonButton:EnableMouse(true)
@@ -425,17 +420,15 @@ for i = 1,GetNumAddOns() do
 			GameTooltip:Hide()
 			end)
 		expandAddonButton:RegisterForClicks("AnyUp")
-		Text = expandAddonButton:CreateFontString(nil, "LOW")
-		Text:SetFont(C.media.font, C.general.fontscale)
-		Text:SetPoint("CENTER", expandAddonButton, 0, 0)
-		Text:SetText("+")
-		expandAddonButton.txt = Text
+		expandAddonButton:FontString(nil, C["media"].font, C["general"].fontscale)
+		expandAddonButton.text:SetPoint("CENTER", expandAddonButton, 0, 0)
+		expandAddonButton.text:SetText("+")
 		expandAddonButton:SetScript("OnMouseUp", function(self)
 			addonInfo[i].collapsed = not addonInfo[i].collapsed
 			if addonInfo[i].collapsed then
-				self.txt:SetText("+")
+				self.text:SetText("+")
 			else
-				self.txt:SetText("-")
+				self.text:SetText("-")
 			end
 			refreshAddOnMenu()
 		end)

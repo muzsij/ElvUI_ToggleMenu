@@ -1,10 +1,8 @@
 ## Interface: 40000
-## Title: |cff1784d1ElvUI|r Toggle Menu
+## Title: |cff1784d1ElvUI Toggle Menu|r
 ## Notes: Toggle it!
 ## Author: Hypernics
-## Version: 2.0
+## Version: 2.1
 ## RequiredDeps: ElvUI
-## OptionalDeps: ElvUI_ConfigUI
-
 
 togglemenu.lua
